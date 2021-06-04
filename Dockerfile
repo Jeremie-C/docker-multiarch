@@ -6,8 +6,13 @@ FROM ${BASE_IMAGE_PREFIX}debian:buster-slim
 ARG QEMU_ARCH
 COPY qemu-${QEMU_ARCH}-static /usr/bin
 
+# S6 overlay
+ARG S6OVERLAY_ARCH
+ADD https://github.com/just-containers/s6-overlay/releases/latest/download/s6-overlay-${S6OVERLAY_ARCH}-installer /tmp/s6overlay.tar.gz
+
 # update
-RUN apt-get update && apt-get upgrade -y
+RUN apt-get update && apt-get upgrade --update --no-cache -y \
+  && tar xzf /tmp/s6overlay.tar.gz -C / && rm /tmp/s6overlay.tar.gz
 
 # French
 RUN apt-get install -y locales && rm -rf /var/lib/apt/lists/* \
@@ -16,7 +21,7 @@ ENV LANG fr_FR.utf8
 
 
 
-
+ENTRYPOINT [ "/init" ]
 
 # Labels
 ARG BUILD_DATE
