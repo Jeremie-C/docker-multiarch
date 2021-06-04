@@ -8,11 +8,12 @@ COPY qemu-${QEMU_ARCH}-static /usr/bin
 
 # S6 overlay
 ARG S6OVERLAY_ARCH
-ADD https://github.com/just-containers/s6-overlay/releases/latest/download/s6-overlay-${S6OVERLAY_ARCH}-installer /tmp/s6overlay.tar.gz
+ADD https://github.com/just-containers/s6-overlay/releases/latest/download/s6-overlay-${S6OVERLAY_ARCH}-installer /tmp/
+RUN chmod +x /tmp/s6-overlay-${S6OVERLAY_ARCH}-installer && /tmp/s6-overlay-${S6OVERLAY_ARCH}-installer / \
+  && rm -f /tmp/s6-overlay-${S6OVERLAY_ARCH}-installer
 
 # update
-RUN apt-get update && apt-get upgrade -y \
-  && tar xzf /tmp/s6overlay.tar.gz -C / && rm /tmp/s6overlay.tar.gz
+RUN apt-get update && apt-get upgrade -y
 
 # French
 RUN apt-get install -y locales && rm -rf /var/lib/apt/lists/* \
