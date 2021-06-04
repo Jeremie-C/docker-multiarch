@@ -9,6 +9,13 @@ L'auto-build peut être activé ou non.
 
 La gestion des tags et des manifestes est automatique.
 
+## ATTENTION
+
+Suivant votre image source, vous devez modifier le fichier hooks/.config
+
+Par exemple, l'image debian:slim n'existe pas en ARMv6 :
+build_architectures=(amd64 arm32v5 arm32v7 arm64v8)
+
 ## Exemples de configuration
 
 ![Configuration AutoBuild](./images/autobuild.png "Configuration")
